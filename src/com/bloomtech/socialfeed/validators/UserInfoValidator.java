@@ -7,20 +7,21 @@ import com.bloomtech.socialfeed.models.User;
 public class UserInfoValidator implements Validator {
 
     private boolean isValidUsername(String username) {
-        //TODO: validate username begins with an uppercase letter, is at least 4 characters long, and only contains
-        //letters, numbers, and underscores
-        return true;
+        // Validate username begins with an uppercase letter, is at least 4 characters long,
+        // and only contains letters, numbers, and underscores
+        String usernamePattern = "^[A-Z][A-Za-z0-9_]{3,}$";
+        return username.matches(usernamePattern);
     }
 
     private boolean isValidPassword(String password) {
-        //TODO: validate password contains at least 8 characters, an uppercase, and a lowercase letter.
-        //valid symbols include: !@#$%^&*
-        return true;
+        // Validate password contains at least 8 characters, at least one uppercase letter,
+        // one lowercase letter, one digit, and valid symbols include: !@#$%^&*
+        String passwordPattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[A-Za-z\\d!@#$%^&*]{8,}$";
+        return password.matches(passwordPattern);
     }
 
     @Override
     public void validate(Object userData) {
-
         User user = (User) userData;
 
         if (!isValidUsername(user.getUsername())) {
@@ -31,6 +32,8 @@ public class UserInfoValidator implements Validator {
             throw new UserValidationException("Invalid Password: Password must be at least 8 characters long, " +
                     "contain at least one uppercase letter, one lowercase letter, and one special character!");
         }
-        if (user.getRole() == null) { user.setRole(Role.USER); }
+        if (user.getRole() == null) {
+            user.setRole(Role.USER);
+        }
     }
 }
